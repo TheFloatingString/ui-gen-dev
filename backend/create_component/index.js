@@ -1,21 +1,13 @@
-const fs = require('fs');
+import fs from 'fs';
+import express from 'express';
+const app = express();
+import bodyParser from "body-parser";
+const port = 3000;
 
-create_component(test_json);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-function create_component(test_json) {
-    // console.log(Object.keys(test_json));
-    for (var i = 0; i < Object.values(test_json).length; i++) {
-        console.log(i);
-        console.log(Object.values(test_json)[i]);
-        if (Object.values(test_json)[i].type == "Typography") {
-            console.log("foobar");
-        }
-    }
-    "<Typography sx={textbox_1Style}> ";
-}
-
-
-test_json = {
+var test_json = {
     "textbox_1":{
        "type":"Typography",
        "width":"100",
@@ -43,4 +35,37 @@ test_json = {
        "src":"./image.png",
        "alt":"Image World"
     }
- };
+};
+
+create_component(test_json);
+
+function create_component(test_json) {
+    // console.log(Object.keys(test_json));
+    for (var i = 0; i < Object.values(test_json).length; i++) {
+        console.log(i);
+        console.log(Object.values(test_json)[i]);
+        if (Object.values(test_json)[i].type == "Typography") {
+            console.log("foobar");
+        }
+    }
+    "<Typography sx={textbox_1Style}> ";
+}
+
+app.post('/api/endpoint', async function (req, res) {
+    const data = req.body;
+    const action = req.body.action;
+    response = JSON.stringify({
+        "action": action,
+        "result": result
+    });
+    console.log(response);
+    res.send(response);
+});
+
+app.get('/', function(req, res, next) {
+    res.send('Greetings!');
+});
+
+app.listen(3000, function() {
+    console.log('Server listening at http://CONTAINER_IP_ADDRESS:' + port +'/api/endpoint');
+});
