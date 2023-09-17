@@ -8,48 +8,47 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
 const filePath = 'created_component.jsx';
 const imports = 'import { Typography, Image, Button, RadioGroup } from "@mui/material"\nimport Image from "next/image"'
 const function_header = 'export default function GeneratedComponent() {\n\t<>'
 
-var test_json = {
-    "textbox_1":{
-       "type":"Typography",
-       "width":"40",
-       "height":"10",    
-       "left_margin":"30",
-       "top_margin":"40",
-       "font_size":"12",
-       "text":"Hello World"
-    },
-    "button_1":{
-       "type":"Button",
-       "width":"250/512",
-       "height":"50",
-       "left_margin":"50",
-       "top_margin":"20",
-       "font_size":"12",
-       "text":"Button World"
-    },
-    "image_1":{
-       "type":"Image",
-       "width":"10",
-       "height":"10",
-       "left_margin":"50",
-       "top_margin":"50",
-       "src":"./image.png",
-    },
-    "radio_1":{
-        "type":"RadioGroup",
-        "title":"Food",
-        "options":`["food1","food2","food3"]`,
-        "width":"30",
-        "height":"70",
-        "left_margin":"50",
-        "top_margin":"10"
-    }
- };
+// var test_json = {
+//     "textbox_1":{
+//        "type":"Typography",
+//        "width":"40",
+//        "height":"10",
+//        "left_margin":"30",
+//        "top_margin":"40",
+//        "font_size":"12",
+//        "text":"Hello World"
+//     },
+//     "button_1":{
+//        "type":"Button",
+//        "width":"250/512",
+//        "height":"50",
+//        "left_margin":"50",
+//        "top_margin":"20",
+//        "font_size":"12",
+//        "text":"Button World"
+//     },
+//     "image_1":{
+//        "type":"Image",
+//        "width":"10",
+//        "height":"10",
+//        "left_margin":"50",
+//        "top_margin":"50",
+//        "src":"./image.png",
+//     },
+//     "radio_1":{
+//         "type":"RadioGroup",
+//         "title":"Food",
+//         "options":`["food1","food2","food3"]`,
+//         "width":"30",
+//         "height":"70",
+//         "left_margin":"50",
+//         "top_margin":"10"
+//     }
+//  };
 
 function write(filePath, text) {
     try {
@@ -65,7 +64,7 @@ function write(filePath, text) {
     }
 }
 
-create_component(test_json);
+// create_component(test_json);
 
 function create_component(test_json) {
     let component_code=imports+"\n\n" + function_header + "\n"
@@ -135,21 +134,32 @@ function create_component(test_json) {
     write(filePath, "\n"+styling);
 }
 
-// app.post('/api/endpoint', async function (req, res) {
-//     const data = req.body;
-//     const action = req.body.action;
-//     response = JSON.stringify({
-//         "action": action,
-//         "result": result
-//     });
-//     console.log(response);
-//     res.send(response);
-// });
+app.post('/api/endpoint', async function (req, res) {
+    try {
+        // const data = req.body;
+        // const action = req.body.action;
+        const response_text = JSON.stringify({
+            "result": "Success"
+        });
+        create_component(req.body.data)
+        console.log(response_text);
+        res.send(response_text);
+    }
+    catch {
+        console.log("Error");
+        const response_text = JSON.stringify({
+            "result": "Error"
+        });
+        res.send(response_text);
+    }
 
-// app.get('/', function(req, res, next) {
-//     res.send('Greetings!');
-// });
 
-// app.listen(port, function() {
-//     console.log('Server listening at http://CONTAINER_IP_ADDRESS:' + port +'/api/endpoint');
-// });
+});
+
+app.get('/', function(req, res, next) {
+    res.send('Greetings!');
+});
+
+app.listen(port, function() {
+    console.log('Server listening at http://CONTAINER_IP_ADDRESS:' + port +'/api/endpoint');
+});
