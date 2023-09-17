@@ -8,7 +8,7 @@ import openai
 
 load_dotenv()
 
-IMAGE_FILEPATH = "static\\sample_bw_slide.png"
+IMAGE_FILEPATH = "static\\IMG_2881.jpg"
 
 pytesseract.pytesseract.tesseract_cmd = "C:\\Users\\laure\\Tesseract-Temp\\tesseract.exe"
 
@@ -28,6 +28,8 @@ pprint(img)
  
 # Convert the image to gray scale
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+cv2.imwrite("gray.png", gray)
  
 # Performing OTSU threshold
 ret, thresh1 = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
@@ -41,6 +43,8 @@ rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (18, 18))
  
 # Applying dilation on the threshold image
 dilation = cv2.dilate(thresh1, rect_kernel, iterations = 1)
+
+cv2.imwrite("dilation.png", dilation)
 
 # Finding contours
 contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL,
@@ -98,7 +102,7 @@ for sample_text in main_list_text:
 
     instructor = get_instructor(sample_text)
 
-    if instructor == "#image":
+    if instructor.upper() in ["#IMAGE", "#IMG", "#LMG"]:
         main_html_elements.append(generate_img_tag(sample_text))
     else:
         main_html_elements.append(generate_p_tag(sample_text))
