@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import "../App.css";
+import axios from 'axios';
 
 function WebcamApp() {
   const webcamRef = useRef(null);
@@ -9,31 +10,43 @@ function WebcamApp() {
   const [uploadedImage, setUploadedImage] = useState(null);
 
   const toggleCamera = () => {
-    setIsCameraOn(prevState => !prevState);
+    setIsCameraOn((prevState) => !prevState);
     setIsImageUpload(false);
   };
 
   const toggleImageUpload = () => {
-    setIsImageUpload(prevState => !prevState);
+    setIsImageUpload((prevState) => !prevState);
     setIsCameraOn(false);
-  }
+  };
+
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
         setUploadedImage(e.target.result);
-      }
+        setIsImageUpload(true);
+      };
       reader.readAsDataURL(file);
     }
   };
-  // これはビデオの限り
-  const videoConstraints = {
-    facingMode: isCameraOn ? 'user' : 'environment',
 
+  const handleSubmit = () => {
+    console.log('Uploaded image data:', uploadedImage);
   };
 
-  // イメージをアプロードすると、カメラの設定もオフにする
+  axios({
+    method: 'post',
+    url: 'change later',
+    data: {
+      "filePath": uploadedImage
+    }
+  });
+
+  const videoConstraints = {
+    facingMode: isCameraOn ? 'user' : 'environment',
+  };
+
   return (
     <div className="App" style={{ marginLeft: '30px', width: '35vw' }}>
       <div className="content-container">
@@ -46,22 +59,31 @@ function WebcamApp() {
               {isImageUpload ? 'Hide Image Upload' : 'Upload Image'}
             </button>
           </div>
-          {isCameraOn && !isImageUpload ? (<Webcam
-            audio={false}
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            videoConstraints={videoConstraints} // Toggle camera
-          />) : (isImageUpload ? (
-            <div className="image upload" >
+          {isCameraOn && !isImageUpload ? (
+            <Webcam
+              audio={false}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              videoConstraints={videoConstraints}
+            />
+          ) : isImageUpload ? (
+            <div className="image upload">
               <input type="file" accept="image/*" onChange={handleImageUpload} />
-              {uploadedImage && <img
-                src={uploadedImage}
-                alt="Uploaded"
-                className="uploaded-image"
-                style={{ maxWidth: '100%', maxHeight: '100%' }}
-              />}
+              {uploadedImage && (
+                <img
+                  src={uploadedImage}
+                  alt="Uploaded"
+                  className="uploaded-image"
+                  style={{ maxWidth: '100%', maxHeight: '100%' }}
+                />
+              )}
+              <button onClick={handleSubmit} className="submit-button">
+                Submit
+              </button>
             </div>
-          ) : <div className="webcam-placeholder" style={{ width: '100%', height: '100%' }} />)}
+          ) : (
+            <div className="webcam-placeholder" style={{ width: '100%', height: '100%' }} />
+          )}
         </div>
       </div>
     </div>
