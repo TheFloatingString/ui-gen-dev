@@ -8,7 +8,7 @@ from io import BytesIO
 # from fastapi import FastAPI, Form
 
 app = Flask(__name__)
-try:
+'''try:
     x = {"action": "test"}
     x = json.dumps(x)
     urls = "http://localhost:3000/post?data="
@@ -16,7 +16,7 @@ try:
     var = requests.post(urls, json=x)
 except:
     print("Error sending post request")
-
+'''
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
@@ -28,3 +28,7 @@ def home():
     print(data["test"])
     result = make_response("jsonify(result)", 200)
     return result
+
+
+if __name__ == "__main__":
+    app.run(debug=True, port=8000)
