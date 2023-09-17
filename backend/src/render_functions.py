@@ -20,6 +20,16 @@ def get_instructor(text_descriptor):
     else:
         return None
     
+def get_openai_link(text_descriptor):
+
+    response = openai.Image.create(
+        prompt=text_descriptor,
+        n=1,
+        size="256x256"
+        )
+    
+    return response["data"][0]["url"]
+
 def generate_img_tag(text_descriptor):
 
     print(f"text descriptor: {text_descriptor}")
