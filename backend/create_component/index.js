@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const filePath = 'created_component.jsx';
-const imports = 'import { Typography, Image, Button, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio } from "@mui/material"\nimport Image from "next/image"'
+const imports = 'import { Typography, Button, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio } from "@mui/material"\nimport Image from "next/image"'
 const function_header = 'export default function GeneratedComponent() {\n\t<>'
 
 // var test_json = {
