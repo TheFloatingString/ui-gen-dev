@@ -3,3 +3,7 @@
 
 # Ignore pycache
 **/__pycache__
+
+# Ignore .env
+.env
+**/.env
