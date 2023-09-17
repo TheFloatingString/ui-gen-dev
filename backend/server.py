@@ -5,7 +5,11 @@ import base64
 import PIL
 from PIL import Image
 from io import BytesIO
-# from fastapi import FastAPI, Form
+
+from pprint import pprint
+
+from src import render_functions
+
 
 app = Flask(__name__)
 '''try:
@@ -21,12 +25,21 @@ except:
 def hello_world():
     return "<p>Hello, World!</p>"
 
+@app.route("/dev/test_main_render")
+def get_dev_test_main_render():
+
+    res = render_functions.screenshot_to_json("static\\final-test-1.png")
+    return {"data": res}
+
+
 @app.route("/endpoint/", methods=['POST'])
 def home():
     data = request.get_json()
     print(data)
     print(data["test"])
     result = make_response("jsonify(result)", 200)
+
+    pprint(result)
     return result
 
 
