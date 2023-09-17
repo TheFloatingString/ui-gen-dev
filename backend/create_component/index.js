@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const filePath = 'created_component.jsx';
-const imports = 'import { Typography, Image, Button, RadioGroup } from "@mui/material"\nimport Image from "next/image"'
+const imports = 'import { Typography, Image, Button, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio } from "@mui/material"\nimport Image from "next/image"'
 const function_header = 'export default function GeneratedComponent() {\n\t<>'
 
 // var test_json = {
@@ -123,7 +123,7 @@ function create_component(test_json) {
                 roptions = roptions.replace("[", "").replace("]", "").split(",")
                 // loop through the children in the options array and generate a Radio button each
                 for(var x = 0; x < roptions.length; x++)
-                    component_code=component_code+`\n\t\t\t\t<FormControlLabel value=${roptions[x]} control={<Radio />} label=${roptions[x]} />`
+                    component_code=component_code+`\n\t\t\t\t<FormControlLabel value="${roptions[x]}" control={<Radio />} label="${roptions[x]}" />`
                 component_code=component_code+"\n\t\t\t</RadioGroup>\n\t\t</FormControl>"
                 styling=styling+`const ${styling_name} = {\n\twidth: "${rwidth}",\n\theight: "${rheight}",\n\tmarginTop: "${rmarginTop}",\n\tmarginRight: "${rmarginLeft}"\n}`
 
@@ -138,6 +138,7 @@ app.post('/api/endpoint', async function (req, res) {
     try {
         // const data = req.body;
         // const action = req.body.action;
+        write("react.json", JSON.stringify(req.body.data));
         const response_text = JSON.stringify({
             "result": "Success"
         });
